@@ -20,8 +20,8 @@ for movie_id in range(11,12):
     # 영화 참가자 확인
     conn.request("GET", f"/3/movie/{movie_id}?language=ko-KR&api_key={api_key}")
     res = conn.getresponse()
-    tmp_data = json.loads(res.read().decode('utf-8'))
-    if tmp_data.get('belongs_to_collection'):
+    tmp_data_movie = json.loads(res.read().decode('utf-8'))
+    if tmp_data_movie.get('belongs_to_collection'):
         conn.request("GET", f'https://api.themoviedb.org/3/movie/{movie_id}/credits?api_key={api_key}')
         res = conn.getresponse()
         credit = json.loads(res.read().decode('utf-8'))
@@ -42,7 +42,7 @@ for movie_id in range(11,12):
                 break
         peoples = []
         actor.append(director)
-        connnect = http.client.HTTPSConnection("api.themoviedb.org")
+        connect = http.client.HTTPSConnection("api.themoviedb.org")
         # 영화에 참가한 사람 모두 찾기
         for people_id in actor:
             connect.request("GET", f"/3/person/{people_id}?language=ko&api_key={api_key}")
@@ -85,26 +85,26 @@ for movie_id in range(11,12):
             "fields":{
                 'actors': actor,
                 'director': director,
-                'genres': [genres['id'] for genres in tmp_data['genres']],'overview': tmp_data['overview'],
-                'release_date' : tmp_data['release_date'],
-                'title' : tmp_data['title'],
-                'img_url' : 'https://image.tmdb.org/t/p/w500' + tmp_data['poster_path'],
-                'country' : country_code[tmp_data['production_countries'][0]['iso_3166_1']],
-                'popularity': tmp_data['popularity'],
-                'overview': tmp_data['overview']
+                'genres': [genres['id'] for genres in tmp_data_movie['genres']],'overview': tmp_data_movie['overview'],
+                'release_date' : tmp_data_movie['release_date'],
+                'title' : tmp_data_movie['title'],
+                'img_url' : 'https://image.tmdb.org/t/p/w500' + tmp_data_movie['poster_path'],
+                'country' : country_code[tmp_data_movie['production_countries'][0]['iso_3166_1']],
+                'popularity': tmp_data_movie['popularity'],
+                'overview': tmp_data_movie['overview']
             }
             
         }
         # 네이버 영화정보 접속
-        encText = urllib.parse.quote(tmp_data['title'])
+        encText = urllib.parse.quote(tmp_data_movie['title'])
         url = "https://openapi.naver.com/v1/search/movie?query=" + encText
         request = urllib.request.Request(url)
         request.add_header("X-Naver-Client-Id",client_id)
         request.add_header("X-Naver-Client-Secret",client_secret)
         response = urllib.request.urlopen(request)
         response_body = json.loads(response.read().decode('utf-8'))
-        if not tmp['img_url']:
-            tmp['img_url'] = response_body['items'][0]['image']
+        if not tmp['fields']['img_url']:
+            tmp['fields']['img_url'] = response_body['items'][0]['image']
         # 평점 추가
         tmp['fields'].update({'rating':float(response_body['items'][0]['userRating'])})
         movies.append(tmp)
