@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view
 @api_view(['GET'])
 def movie_index(request):
     movies = Movie.objects.all()
-    serializer = MovieSerializers(movies, many=True)
+    serializer = MovieUpdateSerializers(movies, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
