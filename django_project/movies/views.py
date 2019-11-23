@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from .serializers import MovieSerializers, GenreSerializers, PeopleSerializers, MovieUpdateSerializers
+from django.shortcuts import render, get_object_or_404
+from .serializers import MovieSerializers, GenreSerializers, PeopleSerializers, MovieUpdateSerializers, PersonDetailSerializers
 from .models import Movie, Genre, People
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -10,15 +10,16 @@ def movie_index(request):
     serializer = MovieUpdateSerializers(movies, many=True)
     return Response(serializer.data)
 
-@api_view(['GET'])
-def genre_index(request):
-    genres = Genre.objects.all()
-    serialize = GenreSerializers(genres, many=True)
-    return Response(serialize.data)
 
 @api_view(['GET'])
-def people_index(request):
-    people = People.objects.all()
-    serializer = PeopleSerializers(people, many=True)
+def person_detail(request, person_pk):
+    person = get_object_or_404(People, pk=person_pk)
+    serializer = PersonDetailSerializers(person)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def movie_detail(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    serializer = MovieUpdateSerializers(movie)
     return Response(serializer.data)
 
