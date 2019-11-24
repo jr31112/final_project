@@ -12,8 +12,6 @@ def user_detail(request, user_id):
 
 @api_view(['POST'])
 def signup(request):
-    print(request.data)
-    username = request.data.get('username')
-    password = request.data.get('password')
-    user = get_user_model().objects.create(username=username, password=password)
-    return Response({'message': '성공적으로 회원가입하였습니다.'})
+    user = UserSerializer.create(get_user_model(), request.data)
+    serializer = UserSerializer(user)
+    return Response(serializer.data)
