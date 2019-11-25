@@ -21,3 +21,11 @@ def person_detail(request, person_pk):
     person = get_object_or_404(People, pk=person_pk)
     serializer = PersonDetailSerializers(person)
     return Response(serializer.data)
+
+@api_view(['GET'])
+def finder(request, query):
+    movies = Movie.objects.filter(title__contains=query)
+    peoples = People.objects.filter(ko_name__contains=query)
+    serializer_movies = MovieUpdateSerializers(movies, many=True)
+    serializer_peoples = PersonDetailSerializers(peoples, many=True)
+    return Response(serializer_movies.data + serializer_peoples.data)

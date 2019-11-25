@@ -4,4 +4,5 @@ urlpatterns = [
     path('movies/', views.movie_index, name='movie_index'),
     path('movies/<int:movie_pk>/', views.movie_detail, name='movie_detail'),
     path('people/<int:person_pk>/', views.person_detail, name='person_detail'),
+    path('search/<str:query>/', views.finder, name='finder'),
 ]
