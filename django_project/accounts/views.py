@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .serializers import UserSerializer
+from .serializers import UserSerializer, UserIndexSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -9,7 +9,7 @@ from rest_framework_jwt.serializers import JSONWebTokenSerializer
 @api_view(['GET'])
 def user_detail(request, user_id):
     user = get_object_or_404(get_user_model(), pk=user_id)
-    serializer = UserSerializer(user)
+    serializer = UserIndexSerializer(user)
     return Response(serializer.data)
 
 @api_view(['POST'])
