@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 # Create your views here.
 @api_view(['GET'])
 def movie_index(request):
+    # print(request.GET['user_id'])
     movies = Movie.objects.all().order_by('-popularity')[:10]
     serializer = MovieUpdateSerializers(movies, many=True)
     return Response(serializer.data)
@@ -46,7 +47,6 @@ def reviews(request):
 
 @api_view(['POST'])
 def review_create(request, movie_pk, user_pk):
-    print(request.data)
     serializer = ReviewUserSerializers(data=request.data)
 
     if serializer.is_valid(raise_exception=True):
