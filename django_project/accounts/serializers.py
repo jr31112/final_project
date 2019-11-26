@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from movies.models import Review
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
@@ -7,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
     like_movies = serializers.PrimaryKeyRelatedField(queryset=get_user_model().objects.all(), many=True)
     class Meta:
         model = get_user_model()
-        fields =['id', 'username', 'password','password2' , 'like_movies']
+        fields =['id', 'username', 'password', 'password2' , 'like_movies']
     
     def create(self, validated_data):
         user = get_user_model().objects.create(
@@ -36,3 +37,10 @@ class UserSerializer(serializers.ModelSerializer):
                 break
 
         return error
+
+class UserIndexSerializer(serializers.ModelSerializer):
+    review_set = serializers.PrimaryKeyRelatedField(queryset=Review.objects.all(), many=True)
+    class Meta:
+        model = get_user_model()
+        fields = ['id', 'username'] + ['review_set']
+

@@ -6,3 +6,4 @@ from movies.models import Movie
 class User(AbstractUser):
     like_movies = models.ManyToManyField(Movie, related_name="like_users", blank=True)
     
+    
