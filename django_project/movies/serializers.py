@@ -47,3 +47,7 @@ class UserReviewSerializers(serializers.ModelSerializer):
         fields = ['id', 'username'] + ['review_set']
 
 
+class ReviewUserSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ['id', 'content', 'user_score']

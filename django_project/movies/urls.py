@@ -7,4 +7,6 @@ urlpatterns = [
     path('search/<str:query>/', views.finder, name='finder'),
     path('user/<int:user_pk>/', views.user_detail, name='user_detail'),
     path('reviews/', views.reviews, name='reviews'),
+    path('movies/<int:movie_pk>/reviews/<int:user_pk>/', views.review_create, name='reveiw_create'),
+    path('reviews/<int:review_pk>/<int:user_pk>/', views.update_delete_review, name='update_delete_review'),
 ]
