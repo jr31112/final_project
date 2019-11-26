@@ -46,7 +46,9 @@ def reviews(request):
 
 @api_view(['POST'])
 def review_create(request, movie_pk, user_pk):
+    print(request.data)
     serializer = ReviewUserSerializers(data=request.data)
+
     if serializer.is_valid(raise_exception=True):
         serializer.save(movie_id=movie_pk, user_id=user_pk)
     return Response({'message' : '리뷰가 작성되었습니다.'})

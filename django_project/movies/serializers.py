@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Movie, Genre, People, Review
 from django.contrib.auth import get_user_model
-from accounts.serializers import UserSerializer
+from accounts.serializers import UserSerializer, SimpleUserSerializer
 
 class GenreSerializers(serializers.ModelSerializer):
     class Meta:
@@ -18,14 +18,20 @@ class MovieSerializers(serializers.ModelSerializer):
         model = Movie
         fields = ['id', 'title', 'overview', 'release_date', 'img_url', 'country', 'rating', 'popularity', 'trailer', 'runtime']
 
+class SimpleReviewSerializers(serializers.ModelSerializer):
+    user = SimpleUserSerializer()
+    class Meta:
+        model = Review
+        fields = ['id', 'content', 'user_score'] + ['user']
+
 class MovieUpdateSerializers(serializers.ModelSerializer):
     actors = PeopleSerializers(many=True)
     genres = GenreSerializers(many=True)
     director = PeopleSerializers()
-    # review_set = ReviewSerializers(many=True)
+    review_set = SimpleReviewSerializers(many=True)
     class Meta:
         model =  Movie
-        fields = MovieSerializers.Meta.fields + ['genres'] + ['director'] + ['actors'] # + ['review_set']
+        fields = MovieSerializers.Meta.fields + ['genres'] + ['director'] + ['actors'] + ['review_set']
 
 class PersonDetailSerializers(serializers.ModelSerializer):
     actor_movies = MovieSerializers(many=True)
