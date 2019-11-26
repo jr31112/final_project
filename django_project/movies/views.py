@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 # Create your views here.
 @api_view(['GET'])
 def movie_index(request):
-    if request.GET['user_id']:
+    if request.GET.get('user_id'):
         # 수정 요함
         movies = Movie.objects.all().order_by('-popularity')[:10]
     else:
@@ -44,7 +44,7 @@ def user_detail(request, user_pk):
 
 @api_view(['GET'])
 def reviews(request):
-    if request.GET['user_id']:
+    if request.GET.get('user_id'):
         # 수정 요함
         review = Review.objects.all().order_by('-id')[:10]
     else:
