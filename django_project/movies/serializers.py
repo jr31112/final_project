@@ -11,12 +11,12 @@ class GenreSerializers(serializers.ModelSerializer):
 class PeopleSerializers(serializers.ModelSerializer):
     class Meta:
         model = People
-        fields = ['id', 'ko_name', 'en_name', 'birthday', 'gender', 'is_alive', 'popularity', 'place_of_birth', 'img_url']
+        fields = ['id', 'ko_name', 'en_name', 'birthday', 'gender','deathday', 'popularity', 'place_of_birth', 'img_url']
 
 class MovieSerializers(serializers.ModelSerializer): 
     class Meta:
         model = Movie
-        fields = ['id', 'title', 'overview', 'release_date', 'img_url', 'country', 'rating', 'popularity']
+        fields = ['id', 'title', 'overview', 'release_date', 'img_url', 'country', 'rating', 'popularity', 'trailer', 'runtime']
 
 class MovieUpdateSerializers(serializers.ModelSerializer):
     actors = PeopleSerializers(many=True)
