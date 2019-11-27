@@ -18,14 +18,20 @@ class MovieSerializers(serializers.ModelSerializer):
         model = Movie
         fields = ['id', 'title', 'overview', 'release_date', 'img_url', 'country', 'rating', 'popularity', 'trailer', 'runtime']
 
+class ReviewUserSerializers(serializers.ModelSerializer):
+    user = UserSerializer()
+    class Meta:
+        model = Review
+        fields = ['id', 'content', 'user_score'] + ['user']
+
 class MovieUpdateSerializers(serializers.ModelSerializer):
     actors = PeopleSerializers(many=True)
     genres = GenreSerializers(many=True)
     director = PeopleSerializers()
-    # review_set = ReviewSerializers(many=True)
+    review_set = ReviewUserSerializers(many=True)
     class Meta:
         model =  Movie
-        fields = MovieSerializers.Meta.fields + ['genres'] + ['director'] + ['actors'] # + ['review_set']
+        fields = MovieSerializers.Meta.fields + ['genres'] + ['director'] + ['actors']  + ['review_set']
 
 class PersonDetailSerializers(serializers.ModelSerializer):
     actor_movies = MovieSerializers(many=True)
@@ -46,8 +52,7 @@ class UserReviewSerializers(serializers.ModelSerializer):
         model = get_user_model()
         fields = ['id', 'username'] + ['review_set']
 
-
-class ReviewUserSerializers(serializers.ModelSerializer):
+class ReviewCreateSerializers(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ['id', 'content', 'user_score']

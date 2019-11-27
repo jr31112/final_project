@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .serializers import MovieUpdateSerializers, PersonDetailSerializers, UserReviewSerializers, ReviewSerializers, ReviewUserSerializers
+from .serializers import MovieUpdateSerializers, PersonDetailSerializers, UserReviewSerializers, ReviewSerializers, ReviewUserSerializers, ReviewCreateSerializers
 from .models import Movie, Genre, People, Review
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -46,7 +46,7 @@ def reviews(request):
 
 @api_view(['POST'])
 def review_create(request, movie_pk, user_pk):
-    serializer = ReviewUserSerializers(data=request.data)
+    serializer = ReviewCreateSerializers(data=request.data)
     if serializer.is_valid(raise_exception=True):
         serializer.save(movie_id=movie_pk, user_id=user_pk)
     return Response({'message' : '리뷰가 작성되었습니다.'})
