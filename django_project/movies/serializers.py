@@ -42,9 +42,10 @@ class PersonDetailSerializers(serializers.ModelSerializer):
 
 class ReviewSerializers(serializers.ModelSerializer):
     movie = MovieSerializers()
+    user = SimpleUserSerializer()
     class Meta:
         model = Review
-        fields = ['id', 'content', 'user_score'] + ['movie']
+        fields = ['id', 'content', 'user_score', 'create_at'] + ['movie'] + ['user']
 
 class UserReviewSerializers(serializers.ModelSerializer):
     review_set = ReviewSerializers(many=True)
