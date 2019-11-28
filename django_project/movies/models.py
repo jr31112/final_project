@@ -30,7 +30,7 @@ class Movie(models.Model):
     director = models.ForeignKey(People, on_delete=models.PROTECT)
     img_url = models.TextField(null=True)
     country = models.CharField(max_length=50)
-    rating = models.FloatField()
+    rating = models.FloatField(null=True)
     popularity = models.FloatField()
     runtime = models.IntegerField(null=True)
     trailer = models.TextField(null=True)
@@ -38,5 +38,6 @@ class Movie(models.Model):
 class Review(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     content = models.TextField()
+    create_at = models.DateTimeField(auto_now_add=True)
     user_score = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(10)])
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)

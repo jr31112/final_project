@@ -44,3 +44,8 @@ class UserIndexSerializer(serializers.ModelSerializer):
         model = get_user_model()
         fields = ['id', 'username'] + ['review_set']
 
+class SimpleUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ['id', 'username']
+

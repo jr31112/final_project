@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import Movie, Genre, People, Review
 from django.contrib.auth import get_user_model
-from accounts.serializers import UserSerializer
+from accounts.serializers import UserSerializer, SimpleUserSerializer
 
 class GenreSerializers(serializers.ModelSerializer):
     class Meta:
@@ -18,8 +18,13 @@ class MovieSerializers(serializers.ModelSerializer):
         model = Movie
         fields = ['id', 'title', 'overview', 'release_date', 'img_url', 'country', 'rating', 'popularity', 'trailer', 'runtime']
 
+<<<<<<< HEAD
 class ReviewUserSerializers(serializers.ModelSerializer):
     user = UserSerializer()
+=======
+class SimpleReviewSerializers(serializers.ModelSerializer):
+    user = SimpleUserSerializer()
+>>>>>>> 55e7ebb4ebda7ae51fabc05cdf9a03b7502ae383
     class Meta:
         model = Review
         fields = ['id', 'content', 'user_score'] + ['user']
@@ -28,10 +33,17 @@ class MovieUpdateSerializers(serializers.ModelSerializer):
     actors = PeopleSerializers(many=True)
     genres = GenreSerializers(many=True)
     director = PeopleSerializers()
+<<<<<<< HEAD
     review_set = ReviewUserSerializers(many=True)
     class Meta:
         model =  Movie
         fields = MovieSerializers.Meta.fields + ['genres'] + ['director'] + ['actors']  + ['review_set']
+=======
+    review_set = SimpleReviewSerializers(many=True)
+    class Meta:
+        model =  Movie
+        fields = MovieSerializers.Meta.fields + ['genres'] + ['director'] + ['actors'] + ['review_set']
+>>>>>>> 55e7ebb4ebda7ae51fabc05cdf9a03b7502ae383
 
 class PersonDetailSerializers(serializers.ModelSerializer):
     actor_movies = MovieSerializers(many=True)
@@ -42,9 +54,10 @@ class PersonDetailSerializers(serializers.ModelSerializer):
 
 class ReviewSerializers(serializers.ModelSerializer):
     movie = MovieSerializers()
+    user = SimpleUserSerializer()
     class Meta:
         model = Review
-        fields = ['id', 'content', 'user_score'] + ['movie']
+        fields = ['id', 'content', 'user_score', 'create_at'] + ['movie'] + ['user']
 
 class UserReviewSerializers(serializers.ModelSerializer):
     review_set = ReviewSerializers(many=True)
