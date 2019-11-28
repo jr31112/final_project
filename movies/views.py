@@ -97,14 +97,17 @@ def sim_pearson(data, name1, name2):
     sumPowY=0 # Y 제곱의 합
     sumXY=0 # X*Y의 합
     count=0 #영화 개수
-    for i in data[name1]: # i = key
-        if i in data[name2]: # 같은 영화를 평가했을때만
-            sumX+=data[name1][i]
-            sumY+=data[name2][i]
-            sumPowX+=pow(data[name1][i],2)
-            sumPowY+=pow(data[name2][i],2)
-            sumXY+=data[name1][i]*data[name2][i]
-            count+=1
+    if data.get(name1):
+        for i in data.get(name1): # i = key
+            if i in data.get(name2): # 같은 영화를 평가했을때만
+                sumX+=data[name1][i]
+                sumY+=data[name2][i]
+                sumPowX+=pow(data[name1][i],2)
+                sumPowY+=pow(data[name2][i],2)
+                sumXY+=data[name1][i]*data[name2][i]
+                count+=1
+    if count == 0:
+        return -1
     return ( sumXY- ((sumX*sumY)/count) )/ sqrt( (sumPowX - (pow(sumX,2) / count)) * (sumPowY - (pow(sumY,2)/count))) if sqrt( (sumPowX - (pow(sumX,2) / count)) * (sumPowY - (pow(sumY,2)/count))) else -1
 
 # 딕셔너리 돌면서 상관계수순으로 정렬
@@ -119,7 +122,7 @@ def top_match(data, name, index=10, sim_function=sim_pearson):
 
 def getRecommendation (data,person,sim_function=sim_pearson):
     result = top_match(data, person ,len(data))
-    
+    person = int(person)
     simSum=0 # 유사도 합을 위한 변수
     score=0 # 평점 합을 위한 변수
     li=[] # 리턴을 위한 리스트
