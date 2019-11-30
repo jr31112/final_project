@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'movies',
     'accounts',
     'corsheaders',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
